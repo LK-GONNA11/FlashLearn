@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlashLearn Classic | Accelerated Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #06b6d4;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --card-bg: rgba(15, 23, 42, 0.9);
+            --card-border: rgba(148, 163, 184, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .warning {
+            color: #f87171;
+            background: rgba(248, 113, 113, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #f87171;
+            font-size: 0.9rem;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(30, 41, 59, 0.5);
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(148, 163, 184, 0.1);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(148, 163, 184, 0.2);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        input, select {
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(30, 41, 59, 0.5);
+            color: white;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+        
+        .flash-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        .flash-word {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            width: 100%;
+            background: rgba(30, 41, 59, 0.7);
+            transition: all 0.3s;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        .flash-word.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .test-mode {
+            display: none;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        .test-prompt {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .test-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-radius: 8px;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: white;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            height: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .results h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .score-display {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 0.5rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .flash-word {
+                font-size: 2rem;
+                padding: 1.5rem;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">FL</div>
+            <div class="logo-text">FlashLearn</div>
+        </div>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 2rem;">Classic Version - Accelerated Learning System</p>
+        
+        <div class="warning">
+            <strong>WARNING:</strong> This system uses visual stimuli. Do not use if you have epilepsy or sensitivity to flashing lights.
+        </div>
+        
+        <div class="settings-grid">
+            <div class="setting-group">
+                <label for="speed">Display Speed (ms)</label>
+                <input type="number" id="speed" value="800" min="300" max="2000" step="100">
+            </div>
+            
+            <div class="setting-group">
+                <label for="font-size">Word Size</label>
+                <select id="font-size">
+                    <option value="2">Small</option>
+                    <option value="2.5" selected>Medium</option>
+                    <option value="3">Large</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <label for="mode">Mode</label>
+                <select id="mode">
+                    <option value="flash">Flash</option>
+                    <option value="test">Test</option>
+                </select>
+            </div>
+        </div>
+        
+        <textarea id="lesson-input" placeholder="Enter the knowledge you wish to memorize..."></textarea>
+        
+        <div class="btn-group">
+            <button id="start-btn" class="btn btn-primary">Start Integration</button>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="flash-container" id="flash-container">
+            <div id="flash-word" class="flash-word"></div>
+            <div class="btn-group">
+                <button id="pause-btn" class="btn btn-secondary">Pause</button>
+                <button id="stop-btn" class="btn btn-secondary">Stop</button>
+            </div>
+        </div>
+        
+        <div class="test-mode" id="test-mode">
+            <div class="test-prompt" id="test-prompt">What is the next word?</div>
+            <input type="text" id="test-input" class="test-input" placeholder="Enter the expected word">
+            <div class="btn-group">
+                <button id="check-btn" class="btn btn-primary">Check</button>
+                <button id="show-btn" class="btn btn-secondary">Show</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Session Results</h2>
+            <div class="score-display">
+                <span id="score-text">Your score:</span>
+                <div class="score-value" id="score-value">0%</div>
+                <div id="score-details"><span id="correct-answers">0</span> correct answers out of <span id="total-questions">0</span> attempts</div>
+            </div>
+            <div class="btn-group">
+                <button id="restart-btn" class="btn btn-primary">New Session</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration
+        const colors = [
+            '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', 
+            '#d946ef', '#ec4899', '#f43f5e', '#f97316',
+            '#f59e0b', '#eab308', '#84cc16', '#10b981'
+        ];
+        
+        // State variables
+        let words = [];
+        let wordColors = {};
+        let currentIndex = 0;
+        let isPlaying = false;
+        let intervalId = null;
+        let testMode = false;
+        let score = 0;
+        let totalAttempts = 0;
+        
+        // DOM elements
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const checkBtn = document.getElementById('check-btn');
+        const showBtn = document.getElementById('show-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const flashContainer = document.getElementById('flash-container');
+        const testModeEl = document.getElementById('test-mode');
+        const resultsEl = document.getElementById('results');
+        const flashWord = document.getElementById('flash-word');
+        const lessonInput = document.getElementById('lesson-input');
+        const testInput = document.getElementById('test-input');
+        const progressBar = document.getElementById('progress-bar');
+        const speedInput = document.getElementById('speed');
+        const modeSelect = document.getElementById('mode');
+        const testPrompt = document.getElementById('test-prompt');
+        const scoreValue = document.getElementById('score-value');
+        const correctAnswersEl = document.getElementById('correct-answers');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        
+        // Event listeners
+        startBtn.addEventListener('click', startFlash);
+        pauseBtn.addEventListener('click', togglePause);
+        stopBtn.addEventListener('click', stopFlash);
+        checkBtn.addEventListener('click', checkAnswer);
+        showBtn.addEventListener('click', showAnswer);
+        restartBtn.addEventListener('click', restartSession);
+        modeSelect.addEventListener('change', updateMode);
+        testInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') checkAnswer();
+        });
+        
+        function startFlash() {
+            const lessonText = lessonInput.value.trim();
+            if (!lessonText) {
+                alert("Please enter content to learn");
+                return;
+            }
+            
+            // Prepare words
+            words = lessonText.split(/\s+/).filter(word => word.length > 0);
+            currentIndex = 0;
+            score = 0;
+            totalAttempts = 0;
+            
+            // Assign unique colors to each word
+            wordColors = {};
+            words.forEach((word, index) => {
+                wordColors[word] = colors[index % colors.length];
+            });
+            
+            // Set up interface
+            flashContainer.style.display = 'flex';
+            startBtn.style.display = 'none';
+            resultsEl.style.display = 'none';
+            progressBar.style.width = '0%';
+            
+            const fontSize = document.getElementById('font-size').value + 'rem';
+            flashWord.style.fontSize = fontSize;
+            
+            testMode = modeSelect.value === 'test';
+            if (testMode) {
+                testModeEl.style.display = 'block';
+                testInput.value = '';
+                testInput.focus();
+                updateTestPrompt();
+            } else {
+                testModeEl.style.display = 'none';
+            }
+            
+            isPlaying = true;
+            flashNextWord();
+            
+            const speed = parseInt(speedInput.value);
+            intervalId = setInterval(flashNextWord, speed);
+        }
+        
+        function flashNextWord() {
+            if (currentIndex >= words.length) {
+                currentIndex = 0;
+                if (testMode) {
+                    stopFlash();
+                    showResults();
+                    return;
+                }
+            }
+            
+            updateProgress();
+            
+            const currentWord = words[currentIndex];
+            flashWord.textContent = currentWord;
+            flashWord.style.backgroundColor = wordColors[currentWord];
+            flashWord.style.color = getContrastColor(wordColors[currentWord]);
+            
+            // Animation
+            flashWord.classList.remove('visible');
+            setTimeout(() => {
+                flashWord.classList.add('visible');
+            }, 50);
+            
+            currentIndex++;
+        }
+        
+        function getContrastColor(hexColor) {
+            const r = parseInt(hexColor.substr(1, 2), 16);
+            const g = parseInt(hexColor.substr(3, 2), 16);
+            const b = parseInt(hexColor.substr(5, 2), 16);
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance > 0.5 ? '#000000' : '#ffffff';
+        }
+        
+        function updateProgress() {
+            const progress = (currentIndex / words.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        function togglePause() {
+            if (isPlaying) {
+                clearInterval(intervalId);
+                pauseBtn.textContent = 'Resume';
+                flashWord.classList.remove('visible');
+            } else {
+                const speed = parseInt(speedInput.value);
+                intervalId = setInterval(flashNextWord, speed);
+                pauseBtn.textContent = 'Pause';
+                flashWord.classList.add('visible');
+            }
+            isPlaying = !isPlaying;
+        }
+        
+        function stopFlash() {
+            clearInterval(intervalId);
+            flashContainer.style.display = 'none';
+            testModeEl.style.display = 'none';
+            
+            if (testMode && currentIndex > 0) {
+                showResults();
+            } else {
+                startBtn.style.display = 'block';
+            }
+            
+            isPlaying = false;
+        }
+        
+        function updateMode() {
+            testMode = modeSelect.value === 'test';
+        }
+        
+        function updateTestPrompt() {
+            if (!testMode) return;
+            const prompts = [
+                "What is the next word?",
+                "What's your guess?",
+                "Try to recall",
+                "The next word is...",
+                "Your answer?"
+            ];
+            testPrompt.textContent = prompts[Math.floor(Math.random() * prompts.length)];
+        }
+        
+        function checkAnswer() {
+            const correctWord = words[currentIndex % words.length];
+            const userAnswer = testInput.value.trim();
+            
+            if (!userAnswer) {
+                alert("Please enter an answer");
+                return;
+            }
+            
+            totalAttempts++;
+            
+            if (userAnswer.toLowerCase() === correctWord.toLowerCase()) {
+                score++;
+                testInput.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
+            } else {
+                testInput.style.backgroundColor = 'rgba(244, 63, 94, 0.2)';
+            }
+            
+            setTimeout(() => {
+                testInput.style.backgroundColor = '';
+                testInput.value = '';
+                updateTestPrompt();
+                flashNextWord();
+            }, 800);
+        }
+        
+        function showAnswer() {
+            const correctWord = words[currentIndex % words.length];
+            testInput.value = correctWord;
+            setTimeout(() => {
+                testInput.value = '';
+                flashNextWord();
+            }, 1500);
+        }
+        
+        function showResults() {
+            const accuracy = totalAttempts > 0 ? Math.round((score / totalAttempts) * 100) : 0;
+            scoreValue.textContent = `${accuracy}%`;
+            correctAnswersEl.textContent = score;
+            totalQuestionsEl.textContent = totalAttempts;
+            resultsEl.style.display = 'block';
+        }
+        
+        function restartSession() {
+            resultsEl.style.display = 'none';
+            startBtn.style.display = 'block';
+            progressBar.style.width = '0%';
+        }
+    </script>
+</body>
+  </html>
